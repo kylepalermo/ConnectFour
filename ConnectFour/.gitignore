@@ -1,1 +1,17 @@
-/bin/
+# Compiled bytecode
+bin/
+out/
+target/
+*.class
+
+# IDE-specific files
+*.iml
+.idea/
+.classpath
+.project
+.settings/
+
+# Temporary files and logs
+*.log
+*.tmp
+*.bak
