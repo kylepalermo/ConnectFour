@@ -33,13 +33,26 @@ public class PlayerData {
 	
 	// Adds a piece of the player's color to the lowest cell in the column
 	// returns the destination cell if successful or 0 if the column is full
-	// TODO: function is very incomplete
 	public long drop(long column, int player){
-		if(((column & player1Data) | (column & player2Data)) != 0) {
+		// check if column out of bounds or if the column is full
+		if(column >= NUM_COLUMNS || ((column & player1Data) | (column & player2Data)) != 0) {
 			return 0;
 		}
-		for(long i = 0; i < NUM_ROWS; i++) {
-			
+		// loop through positions in column starting at the bottom
+		long position = 0;
+		for(long i = NUM_ROWS - 1; i >= 0; i--) {
+			position = (1L << (i * NUM_COLUMNS + column));
+			// check if neither player has a piece at the position
+			if(((player1Data & position) == 0) && ((player2Data & position) == 0)) {
+				// update playerData and return destination cell
+				if(player == 1) {
+					player1Data = player1Data | position;
+				}
+				if(player == 2) {
+					player2Data = player2Data | position;
+				}
+				return position;
+			}
 		}
 		
 		return 0;
@@ -61,15 +74,15 @@ public class PlayerData {
 		// "-+-------"
 		dataString.append("\n-+" + "-".repeat((int) NUM_COLUMNS)  + "\n");
 		// add numbers
-		long pos;
+		long position;
 		for(long i = 0; i < NUM_ROWS; i++) {
 			dataString.append(i + "|");
 			for(long j = 0; j < NUM_COLUMNS; j++) {
-				pos = i * NUM_COLUMNS + j;
-				if((player1Data & (1L << pos)) != 0) {
+				position = i * NUM_COLUMNS + j;
+				if((player1Data & (1L << position)) != 0) {
 					dataString.append("1");
 				}
-				else if((player2Data & (1L << pos)) != 0) {
+				else if((player2Data & (1L << position)) != 0) {
 					dataString.append("2");
 				}
 				else {
