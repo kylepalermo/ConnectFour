@@ -1,6 +1,7 @@
 package application;
 
 // Stores piece location data for Connect Four, allowing pieces to be dropped and a check for if either player has won
+// getPlayerData is used for AI to make moves, and toString is used for debugging
 
 public class PlayerData {
 	private long player1Data = 0;
@@ -16,6 +17,18 @@ public class PlayerData {
 	public PlayerData(long rows, long columns) {
 		NUM_COLUMNS = Math.min(columns, 8);
 		NUM_ROWS = Math.min(rows, 8);
+	}
+	
+	// returns the piece location data of the player specified
+	// or 0 if the player does not exist
+	public long getPlayerData(int player) {
+		if(player == 1) {
+			return player1Data;
+		}
+		if(player == 2) {
+			return player2Data;
+		}
+		return 0;
 	}
 	
 	// Adds a piece of the player's color to the lowest cell in the column
