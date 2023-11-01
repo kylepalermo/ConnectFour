@@ -59,9 +59,29 @@ public class PlayerData {
 	}
 	
 	// returns 0 if no winner, 1 for player 1's win, or 2 for player 2's win
-	// returns -1 if there are multiple winners
-	// TODO: not yet implemented
+	// TODO: not yet finished
 	public int checkWinner() {
+		long winComparison = 0;
+		// vertical check
+		if(NUM_ROWS >= 4) {
+			winComparison = 1L | (1L << NUM_COLUMNS) | (1L << (NUM_COLUMNS * 2)) | (1L << (NUM_COLUMNS * 3));
+			long numChecks = (NUM_ROWS - 3) * NUM_COLUMNS;
+			for(long i = 0; i < numChecks; i++) {
+				if((player1Data & winComparison) == winComparison) {
+					return 1;
+				}
+				if((player2Data & winComparison) == winComparison) {
+					return 2;
+				}
+				winComparison = winComparison << 1;
+			}
+		}
+		// TODO:horizontal check
+		
+		// TODO:forward diagonal check
+		
+		// TODO:backward diagonal check
+
 		return 0;
 	}
 	
