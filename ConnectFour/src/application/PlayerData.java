@@ -6,17 +6,17 @@ package application;
 public class PlayerData {
 	private long player1Data = 0;
 	private long player2Data = 0;
-	private long NUM_COLUMNS;
-	private long NUM_ROWS;
+	private long numColumns;
+	private long numRows;
 	
 	public PlayerData() {
-		NUM_COLUMNS = 7;
-		NUM_ROWS = 6;
+		numColumns = 7;
+		numRows = 6;
 	}
 	
 	public PlayerData(long rows, long columns) {
-		NUM_COLUMNS = Math.min(columns, 8);
-		NUM_ROWS = Math.min(rows, 8);
+		numColumns = Math.min(columns, 8);
+		numRows = Math.min(rows, 8);
 	}
 	
 	// returns the piece location data of the player specified
@@ -35,13 +35,13 @@ public class PlayerData {
 	// returns the destination cell if successful or 0 if the column is full
 	public long drop(long column, int player){
 		// check if column out of bounds or if the column is full
-		if(column >= NUM_COLUMNS || ((column & player1Data) | (column & player2Data)) != 0) {
+		if(column >= numColumns || ((1L << column) & (player1Data | player2Data)) != 0) {
 			return 0;
 		}
 		// loop through positions in column starting at the bottom
 		long position = 0;
-		for(long i = NUM_ROWS - 1; i >= 0; i--) {
-			position = (1L << (i * NUM_COLUMNS + column));
+		for(long i = numRows - 1; i >= 0; i--) {
+			position = (1L << (i * numColumns + column));
 			// check if neither player has a piece at the position
 			if(((player1Data & position) == 0) && ((player2Data & position) == 0)) {
 				// update playerData and return destination cell
@@ -63,9 +63,9 @@ public class PlayerData {
 	public int checkWinner() {
 		long winComparison = 0;
 		// vertical check
-		if(NUM_ROWS >= 4) {
-			winComparison = 1L | (1L << NUM_COLUMNS) | (1L << (NUM_COLUMNS * 2)) | (1L << (NUM_COLUMNS * 3));
-			long numChecks = (NUM_ROWS - 3) * NUM_COLUMNS;
+		if(numRows >= 4) {
+			winComparison = 1L | (1L << numColumns) | (1L << (numColumns * 2)) | (1L << (numColumns * 3));
+			long numChecks = (numRows - 3) * numColumns;
 			for(long i = 0; i < numChecks; i++) {
 				if((player1Data & winComparison) == winComparison) {
 					return 1;
@@ -76,11 +76,24 @@ public class PlayerData {
 				winComparison = winComparison << 1;
 			}
 		}
-		// TODO:horizontal check
+		// horizontal check
+		if(numColumns >= 4) {
+			for(long i = 0; i < numRows; i++) {
+				winComparison = (1L << (i * numColumns)) | (1L << (i * numColumns + 1)) | (1L << (i * numColumns + 2)) | (1L << (i * numColumns + 3));
+				for(long j = 0; j < numColumns - 3; j++) {
+					if((player1Data & winComparison) == winComparison) {
+						return 1;
+					}
+					if((player2Data & winComparison) == winComparison) {
+						return 2;
+					}
+					winComparison = winComparison << 1;
+				}
+			}
+		}
+		// TODO:forward diagonal ( \ ) check
 		
-		// TODO:forward diagonal check
-		
-		// TODO:backward diagonal check
+		// TODO:backward diagonal ( / ) check
 
 		return 0;
 	}
@@ -88,17 +101,17 @@ public class PlayerData {
 	public String toString() {
 		// " |0123456"
 		StringBuilder dataString = new StringBuilder(" |");
-		for(long i = 0; i < NUM_COLUMNS; i++) {
+		for(long i = 0; i < numColumns; i++) {
 			dataString.append(i);
 		}
 		// "-+-------"
-		dataString.append("\n-+" + "-".repeat((int) NUM_COLUMNS)  + "\n");
+		dataString.append("\n-+" + "-".repeat((int) numColumns)  + "\n");
 		// add numbers
 		long position;
-		for(long i = 0; i < NUM_ROWS; i++) {
+		for(long i = 0; i < numRows; i++) {
 			dataString.append(i + "|");
-			for(long j = 0; j < NUM_COLUMNS; j++) {
-				position = i * NUM_COLUMNS + j;
+			for(long j = 0; j < numColumns; j++) {
+				position = i * numColumns + j;
 				if((player1Data & (1L << position)) != 0) {
 					dataString.append("1");
 				}
