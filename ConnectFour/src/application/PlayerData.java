@@ -59,7 +59,7 @@ public class PlayerData {
 	// returns the destination cell if successful or 0 if the column is full
 	public long drop(long column, int player) {
 		// check if column out of bounds or if the column is full
-		if (column >= numColumns || ((1L << column) & (player1Data | player2Data)) != 0) {
+		if (column == -1 || column >= numColumns || ((1L << column) & (player1Data | player2Data)) != 0) {
 			return 0;
 		}
 		// loop through positions in column starting at the bottom
@@ -101,7 +101,7 @@ public class PlayerData {
 		}
 		// horizontal check
 		if (numColumns >= 4) {
-			for (long i = 0; i < numRows - 3; i++) {
+			for (long i = 0; i < numRows; i++) {
 				winComparison = (1L << (i * numColumns)) | (1L << (i * numColumns + 1)) | (1L << (i * numColumns + 2))
 						| (1L << (i * numColumns + 3));
 				for (long j = 0; j < numColumns - 3; j++) {
