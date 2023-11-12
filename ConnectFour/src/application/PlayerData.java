@@ -14,9 +14,23 @@ public class PlayerData {
 		numRows = 6;
 	}
 
-	public PlayerData(long rows, long columns) {
+	public PlayerData(long columns, long rows) {
 		numColumns = Math.min(columns, 8);
 		numRows = Math.min(rows, 8);
+	}
+
+	public PlayerData(long player1Data, long player2Data, long columns, long rows) {
+		this.player1Data = player1Data;
+		this.player2Data = player2Data;
+		numColumns = Math.min(columns, 8);
+		numRows = Math.min(rows, 8);
+	}
+
+	public PlayerData(PlayerData other) {
+		this.player1Data = other.player1Data;
+		this.player2Data = other.player2Data;
+		this.numColumns = other.numColumns;
+		this.numRows = other.numRows;
 	}
 
 	// returns the piece location data of the player specified
@@ -29,6 +43,16 @@ public class PlayerData {
 			return player2Data;
 		}
 		return 0;
+	}
+
+	// returns the number of columns in the board
+	public long getNumColumns() {
+		return numColumns;
+	}
+
+	// returns the number of rows in the board
+	public long getNumRows() {
+		return numRows;
 	}
 
 	// Adds a piece of the player's color to the lowest cell in the column
@@ -59,7 +83,6 @@ public class PlayerData {
 	}
 
 	// returns 0 if no winner, 1 for player 1's win, or 2 for player 2's win
-	// not yet finished
 	public int checkWinner() {
 		long winComparison = 0;
 		// vertical check
