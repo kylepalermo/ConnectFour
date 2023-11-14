@@ -1,7 +1,7 @@
 package application;
 
 // Stores piece location data for Connect Four, allowing pieces to be dropped and a check for if either player has won
-// getPlayerData is used for AI to make moves, and toString is used for debugging
+// toString is used for debugging
 
 public class PlayerData {
 	private long player1Data = 0;
@@ -15,15 +15,11 @@ public class PlayerData {
 	}
 
 	public PlayerData(long columns, long rows) {
-		numColumns = Math.min(columns, 8);
-		numRows = Math.min(rows, 8);
-	}
-
-	public PlayerData(long player1Data, long player2Data, long columns, long rows) {
-		this.player1Data = player1Data;
-		this.player2Data = player2Data;
-		numColumns = Math.min(columns, 8);
-		numRows = Math.min(rows, 8);
+		if(columns * rows > 64 || columns < 1 || rows < 1) {
+			throw new IllegalArgumentException("Board must have between 1 and 64 spaces");
+		}
+		numColumns = columns;
+		numRows = rows;
 	}
 
 	public PlayerData(PlayerData other) {
@@ -31,18 +27,6 @@ public class PlayerData {
 		this.player2Data = other.player2Data;
 		this.numColumns = other.numColumns;
 		this.numRows = other.numRows;
-	}
-
-	// returns the piece location data of the player specified
-	// or 0 if the player does not exist
-	public long getPlayerData(int player) {
-		if (player == 1) {
-			return player1Data;
-		}
-		if (player == 2) {
-			return player2Data;
-		}
-		return 0;
 	}
 
 	// returns the number of columns in the board
@@ -58,8 +42,12 @@ public class PlayerData {
 	// Adds a piece of the player's color to the lowest cell in the column
 	// returns the destination cell if successful or 0 if the column is full
 	public long drop(long column, int player) {
-		// check if column out of bounds or if the column is full
-		if (column == -1 || column >= numColumns || ((1L << column) & (player1Data | player2Data)) != 0) {
+		// check if column out of bounds
+		if (column < 0 || column >= numColumns) {
+	        throw new IllegalArgumentException("Column index out of bounds: " + column);
+	    }
+		// check if the column is full
+		if (((1L << column) & (player1Data | player2Data)) != 0) {
 			return 0;
 		}
 		// loop through positions in column starting at the bottom
@@ -82,7 +70,7 @@ public class PlayerData {
 		return 0;
 	}
 
-	// returns 0 if no winner, 1 for player 1's win, or 2 for player 2's win
+	// returns 0 if no winner, or 1 or 2 if player 1 or 2 is in a winning state
 	public int checkWinner() {
 		long winComparison = 0;
 		// vertical check
@@ -149,7 +137,8 @@ public class PlayerData {
 		}
 		return 0;
 	}
-
+	
+	// displays board, used for testing and debugging game logic
 	public String toString() {
 		// " |0123456"
 		StringBuilder dataString = new StringBuilder(" |");

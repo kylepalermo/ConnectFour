@@ -8,7 +8,8 @@ import java.util.Random;
 public class ConnectFourAI {
 
 	// returns column of easy AI's move, or -1 if there are no moves available
-	// easy AI makes and defends immediate wins, but is clueless otherwise
+	// easy AI makes and defends immediate wins, and does not make moves that
+	// allow enemy wins on top of them
 	public static long easyMove(PlayerData playerData, int player) {
 		long validMoves = 0;
 		long winningMoves = 0;
@@ -145,14 +146,14 @@ public class ConnectFourAI {
 	// returns column of hard AI's move, or -1 if there are no moves available
 	// hard AI makes and defends immediate wins and aggressively sets up wins
 	// TODO: not yet implemented
-	public long hardMove(long player1Data, long player2Data, int player) {
+	public static long hardMove(PlayerData playerData, int player) {
 		return -1;
 	}
 
 	// returns column of master AI's move, or -1 if there are no moves available
 	// master AI makes optimal moves according to the solved game strategy
 	// TODO: not yet implemented
-	public long masterMove(long player1Data, long player2Data, int player) {
+	public static long masterMove(PlayerData playerData, int player) {
 		return -1;
 	}
 }
