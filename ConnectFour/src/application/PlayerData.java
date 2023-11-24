@@ -1,5 +1,9 @@
 package application;
 
+import java.util.HashMap;
+
+import javafx.util.Pair;
+
 // Stores piece location data for Connect Four, allowing pieces to be dropped and a check for if either player has won
 // toString is used for debugging
 
@@ -12,6 +16,14 @@ public class PlayerData {
 	public PlayerData() {
 		numColumns = 7;
 		numRows = 6;
+	}
+	
+	//Initialize game state for testing and debugging
+	public PlayerData(long columns, long rows, long p1Data, long p2Data) {
+		numColumns = columns;
+		numRows = rows;
+		player1Data = p1Data;
+		player2Data = p2Data;
 	}
 
 	public PlayerData(long columns, long rows) {
@@ -164,5 +176,23 @@ public class PlayerData {
 			dataString.append("\n");
 		}
 		return dataString.toString();
+	}
+	
+	// returns a map of row, column pairs to whether player 1 or 2 has a piece at that location
+	public HashMap<Pair<Integer, Integer>, Integer> getBoardState(){
+		HashMap<Pair<Integer, Integer>, Integer> boardState = new HashMap<>();
+		long position = 1L;
+		for(long i = 0; i < numRows; i++) {
+			for(long j = 0; j < numColumns; j++) {
+				if((player1Data & position) != 0) {
+					boardState.put(new Pair<Integer, Integer>((int)i, (int)j), 1);
+				}
+				else if((player2Data & position) != 0) {
+					boardState.put(new Pair<Integer, Integer>((int)i, (int)j), 2);
+				}
+				position <<= 1;
+			}
+		}
+		return boardState;
 	}
 }

@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Map;
+
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -10,9 +12,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 // TODO: I think I just finished the basic board drawing, will need to test dropping
 // TODO: should probably lock the window size during animations, or weirdness might occur
+// TODO: make things more generalized
 
 public class GameController {
 
@@ -23,16 +27,18 @@ public class GameController {
 	@FXML
 	Pane piecesLayer;
 	
-	private boolean containsPlayer1(int x, int y) {
-		return true;
-	}
-	private boolean containsPlayer2(int x, int y) {
-		return false;
-	}
+	// For testing 
+	private final long numColumns = 7;
+	private final long numRows = 6;
+	private final long player1Data = 1;
+	private final long player2Data = 4;
+	private final Color player1Color = Color.ORANGE;
+	private final Color player2Color = Color.BLUE;
+	// Testing constructor is in use
+	private PlayerData playerData = new PlayerData(numColumns, numRows, player1Data, player2Data);
 
 	public void initialize() {
 		setupBoard();
-		// TODO: ask about lambdas? here V
 		boardLayer.widthProperty().addListener((obs, oldVal, newVal) -> setupBoard());
 		boardLayer.heightProperty().addListener((obs, oldVal, newVal) -> setupBoard());
 		// TODO: might also listen for color changes
@@ -53,15 +59,31 @@ public class GameController {
 
 	private void setupBoard() {
 		boardLayer.getChildren().clear(); // Clear existing content
-
-		double cellWidth = boardLayer.getWidth() / 7;
-		double cellHeight = boardLayer.getHeight() / 6;
-
-		for (int row = 0; row < 6; row++) {
-			for (int col = 0; col < 7; col++) {
+		piecesLayer.getChildren().clear();
+		
+		Map<Pair<Integer, Integer>, Integer> boardState = playerData.getBoardState();
+		
+		double cellWidth = boardLayer.getWidth() / playerData.getNumColumns();
+		double cellHeight = boardLayer.getHeight() / playerData.getNumRows();
+		
+		for (int row = 0; row < playerData.getNumRows(); row++) {
+			for (int col = 0; col < playerData.getNumColumns(); col++) {
+				// add board cells
 				Shape boardCell = createBoardCell(cellWidth, cellHeight);
 				boardLayer.add(boardCell, col, row);
-				// TODO: check if the cell contains player 1 or 2 piece and add corresponding piece
+				// add pieces
+				Pair<Integer, Integer> cellPair = new Pair<>(row, col);
+				Integer player = boardState.get(cellPair);
+				if(player != null) {
+					Circle piece  = new Circle(Math.min(cellWidth, cellHeight) / 2 - 1,
+							player == 1 ? player1Color : player2Color);
+					
+					double xPosition = (col + .5) * cellWidth;
+					double yPosition = (col + .5) * cellHeight;
+					piece.setLayoutX(xPosition);
+					piece.setLayoutY(yPosition);
+					piecesLayer.getChildren().add(piece);
+				}
 			}
 		}
 	}
