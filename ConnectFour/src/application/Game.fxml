@@ -19,10 +19,10 @@
           <Button mnemonicParsing="false" text="Move Log" />
             <MenuButton mnemonicParsing="false" text="Colors">
               <items>
-                <MenuItem mnemonicParsing="false" text="Orange / Blue" />
-                <MenuItem mnemonicParsing="false" text="Pink / Green" />
-                  <MenuItem mnemonicParsing="false" text="Yellow / Purple" />
-                  <MenuItem mnemonicParsing="false" text="Custom" />
+                <MenuItem fx:id="orangeBlue" mnemonicParsing="false" text="Orange / Blue" />
+                <MenuItem fx:id="pinkGreen" mnemonicParsing="false" text="Pink / Green" />
+                  <MenuItem fx:id="yellowPurple" mnemonicParsing="false" text="Yellow / Purple" />
+                  <MenuItem fx:id="customColor" mnemonicParsing="false" text="Custom" />
               </items>
             </MenuButton>
             <Button mnemonicParsing="false" text="New Game" />

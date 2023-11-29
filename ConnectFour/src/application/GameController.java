@@ -5,7 +5,10 @@ import java.util.Map;
 import javafx.animation.PathTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,14 +35,22 @@ public class GameController {
 	GridPane boardLayer;
 	@FXML
 	Pane piecesLayer;
+	@FXML
+	MenuItem orangeBlue;
+	@FXML
+	MenuItem pinkGreen;
+	@FXML
+	MenuItem yellowPurple;
+	@FXML
+	MenuItem customColor;
 	
 	// For testing 
 	private final long numColumns = 7;
 	private final long numRows = 6;
 	private final long player1Data = 1;
 	private final long player2Data = 2;
-	private final Color player1Color = Color.ORANGE;
-	private final Color player2Color = Color.BLUE;
+	private Color player1Color = Color.ORANGE;
+	private Color player2Color = Color.BLUE;
 	// Testing constructor is in use
 	private PlayerData playerData = new PlayerData(numColumns, numRows, player1Data, player2Data);
 
@@ -47,7 +58,10 @@ public class GameController {
 		setupBoard();
 		boardLayer.widthProperty().addListener((obs, oldVal, newVal) -> setupBoard());
 		boardLayer.heightProperty().addListener((obs, oldVal, newVal) -> setupBoard());
-		// TODO: might also listen for color changes
+		orangeBlue.setOnAction(colorChange);
+		pinkGreen.setOnAction(colorChange);
+		yellowPurple.setOnAction(colorChange);
+		//TODO: custom color
 
 		// This is where you will add and animate pieces
 		Platform.runLater(() -> dropAnimation(3, 4, 1));
@@ -92,7 +106,7 @@ public class GameController {
 		hole.setFill(Color.TRANSPARENT);
 	    
 		Shape boardCell = Shape.subtract(board, hole);
-		boardCell.setFill(Color.BROWN);
+		boardCell.setFill(Color.rgb(54, 69, 79));
 
 		return boardCell;
 	}
@@ -129,4 +143,30 @@ public class GameController {
 		transition.play();
 		// TODO: logically, certain stuff should happen when finished, and certain stuff should not happen while animation
 	}
+	
+	EventHandler<ActionEvent> colorChange = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			MenuItem source = (MenuItem) event.getSource();
+			switch (source.getId()) {
+			case "orangeBlue":
+				player1Color = Color.hsb(30, .75, 1);
+				player2Color = Color.hsb(240, .75, 1);
+				setupBoard();
+				break;
+			case "pinkGreen":
+				player1Color = Color.hsb(330, .75, 1);
+				player2Color = Color.hsb(120, .75, 1);
+				setupBoard();
+				break;
+			case "yellowPurple":
+				player1Color = Color.hsb(60, .75, 1);
+				player2Color = Color.hsb(270, .75, 1);
+				setupBoard();
+				break;
+			case "customColor":
+				break;
+			}
+		}
+	};
 }
