@@ -31,7 +31,7 @@ public class GameController {
 	private final long numColumns = 7;
 	private final long numRows = 6;
 	private final long player1Data = 1;
-	private final long player2Data = 4;
+	private final long player2Data = 2;
 	private final Color player1Color = Color.ORANGE;
 	private final Color player2Color = Color.BLUE;
 	// Testing constructor is in use
@@ -79,13 +79,14 @@ public class GameController {
 							player == 1 ? player1Color : player2Color);
 					
 					double xPosition = (col + .5) * cellWidth;
-					double yPosition = (col + .5) * cellHeight;
+					double yPosition = (row + .5) * cellHeight;
 					piece.setLayoutX(xPosition);
 					piece.setLayoutY(yPosition);
 					piecesLayer.getChildren().add(piece);
 				}
 			}
 		}
+		System.out.println(playerData);
 	}
 
 	private Shape createBoardCell(double width, double height) {
