@@ -12,7 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameController">
+
+<BorderPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameController">
    <top>
       <ToolBar minHeight="40.0" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -22,7 +23,6 @@
                 <MenuItem fx:id="orangeBlue" mnemonicParsing="false" text="Orange / Blue" />
                 <MenuItem fx:id="pinkGreen" mnemonicParsing="false" text="Pink / Green" />
                   <MenuItem fx:id="yellowPurple" mnemonicParsing="false" text="Yellow / Purple" />
-                  <MenuItem fx:id="customColor" mnemonicParsing="false" text="Custom" />
               </items>
             </MenuButton>
             <Button mnemonicParsing="false" text="New Game" />

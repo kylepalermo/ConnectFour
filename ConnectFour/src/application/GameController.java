@@ -3,15 +3,14 @@ package application;
 import java.util.Map;
 
 import javafx.animation.PathTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
@@ -30,7 +29,7 @@ import javafx.util.Pair;
 public class GameController {
 
 	@FXML
-	StackPane boardStackPane;
+	BorderPane gamePane;
 	@FXML
 	GridPane boardLayer;
 	@FXML
@@ -41,27 +40,25 @@ public class GameController {
 	MenuItem pinkGreen;
 	@FXML
 	MenuItem yellowPurple;
-	@FXML
-	MenuItem customColor;
 	
 	// For testing 
 	private final long numColumns = 7;
 	private final long numRows = 6;
 	private final long player1Data = 1;
 	private final long player2Data = 2;
-	private Color player1Color = Color.ORANGE;
-	private Color player2Color = Color.BLUE;
+	private Color player1Color = Color.hsb(30, .75, 1);
+	private Color player2Color = Color.hsb(240, .75, 1);
 	// Testing constructor is in use
 	private PlayerData playerData = new PlayerData(numColumns, numRows, player1Data, player2Data);
 
 	public void initialize() {
+		gamePane.getStyleClass().add("orangeBluePane");
 		setupBoard();
 		boardLayer.widthProperty().addListener((obs, oldVal, newVal) -> setupBoard());
 		boardLayer.heightProperty().addListener((obs, oldVal, newVal) -> setupBoard());
 		orangeBlue.setOnAction(colorChange);
 		pinkGreen.setOnAction(colorChange);
 		yellowPurple.setOnAction(colorChange);
-		//TODO: custom color
 
 		// This is where you will add and animate pieces
 		Platform.runLater(() -> dropAnimation(3, 4, 1));
@@ -85,16 +82,20 @@ public class GameController {
 				// add pieces
 				Pair<Integer, Integer> cellPair = new Pair<>(row, col);
 				Integer player = boardState.get(cellPair);
-				if(player != null) {
-					Circle piece  = new Circle(Math.min(cellWidth, cellHeight) / 2 - 1,
-							player == 1 ? player1Color : player2Color);
-					
-					double xPosition = (col + .5) * cellWidth;
-					double yPosition = (row + .5 + 1) * cellHeight;
-					piece.setLayoutX(xPosition);
-					piece.setLayoutY(yPosition);
-					piecesLayer.getChildren().add(piece);
+				
+				Circle piece  = new Circle(Math.min(cellWidth, cellHeight) / 2 - 1);
+				if(player == null) {
+					piece.setFill(Color.WHITE);
 				}
+				else {
+					piece.setFill(player == 1 ? player1Color : player2Color);
+				}
+				double xPosition = (col + .5) * cellWidth;
+				double yPosition = (row + .5 + 1) * cellHeight;
+				piece.setLayoutX(xPosition);
+				piece.setLayoutY(yPosition);
+				piecesLayer.getChildren().add(piece);
+				
 			}
 		}
 	}
@@ -106,7 +107,7 @@ public class GameController {
 		hole.setFill(Color.TRANSPARENT);
 	    
 		Shape boardCell = Shape.subtract(board, hole);
-		boardCell.setFill(Color.rgb(54, 69, 79));
+		boardCell.setFill(Color.rgb(205, 133, 63));
 
 		return boardCell;
 	}
@@ -152,21 +153,29 @@ public class GameController {
 			case "orangeBlue":
 				player1Color = Color.hsb(30, .75, 1);
 				player2Color = Color.hsb(240, .75, 1);
+				gamePane.getStyleClass().add("orangeBluePane");
+				gamePane.getStyleClass().remove("pinkGreenPane");
+				gamePane.getStyleClass().remove("yellowPurplePane");
 				setupBoard();
 				break;
 			case "pinkGreen":
 				player1Color = Color.hsb(330, .75, 1);
 				player2Color = Color.hsb(120, .75, 1);
+				gamePane.getStyleClass().add("pinkGreenPane");
+				gamePane.getStyleClass().remove("orangeBluePane");
+				gamePane.getStyleClass().remove("yellowPurplePane");
 				setupBoard();
 				break;
 			case "yellowPurple":
 				player1Color = Color.hsb(60, .75, 1);
 				player2Color = Color.hsb(270, .75, 1);
+				gamePane.getStyleClass().add("yellowPurplePane");
+				gamePane.getStyleClass().remove("orangeBluePane");
+				gamePane.getStyleClass().remove("pinkGreenPane");
 				setupBoard();
-				break;
-			case "customColor":
 				break;
 			}
 		}
 	};
+	
 }

@@ -1,1 +1,16 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.orangeBluePane {
+    -fx-background-image: url('../../res/images/orangeBlueBackground.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.pinkGreenPane {
+    -fx-background-image: url('../../res/images/pinkGreenBackground.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.yellowPurplePane {
+    -fx-background-image: url('../../res/images/yellowPurpleBackground.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
