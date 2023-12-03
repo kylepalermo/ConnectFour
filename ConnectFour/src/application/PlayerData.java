@@ -52,15 +52,15 @@ public class PlayerData {
 	}
 
 	// Adds a piece of the player's color to the lowest cell in the column
-	// returns the destination cell if successful or 0 if the column is full
-	public long drop(long column, int player) {
+	// returns the destination row if successful or -1 if the column is full
+	public int drop(long column, int player) {
 		// check if column out of bounds
 		if (column < 0 || column >= numColumns) {
 	        throw new IllegalArgumentException("Column index out of bounds: " + column);
 	    }
 		// check if the column is full
 		if (((1L << column) & (player1Data | player2Data)) != 0) {
-			return 0;
+			return -1;
 		}
 		// loop through positions in column starting at the bottom
 		long position = 0;
@@ -75,7 +75,7 @@ public class PlayerData {
 				if (player == 2) {
 					player2Data = player2Data | position;
 				}
-				return position;
+				return (int) i;
 			}
 		}
 

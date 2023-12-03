@@ -3,11 +3,11 @@ package application;
 import java.util.Map;
 
 import javafx.animation.PathTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -21,10 +21,6 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
-// TODO: I think I just finished the basic board drawing, will need to test dropping
-// TODO: should probably lock the window size during animations, or weirdness might occur
-// TODO: make things more generalized
 
 public class GameController {
 
@@ -41,15 +37,12 @@ public class GameController {
 	@FXML
 	MenuItem yellowPurple;
 	
-	// For testing 
-	private final long numColumns = 7;
-	private final long numRows = 6;
-	private final long player1Data = 1;
-	private final long player2Data = 2;
+	
 	private Color player1Color = Color.hsb(30, .75, 1);
 	private Color player2Color = Color.hsb(240, .75, 1);
-	// Testing constructor is in use
-	private PlayerData playerData = new PlayerData(numColumns, numRows, player1Data, player2Data);
+	private PlayerData playerData = new PlayerData();
+	private int playerTurn = 1;
+	private int difficulty = 0; // Random
 
 	public void initialize() {
 		gamePane.getStyleClass().add("orangeBluePane");
@@ -59,9 +52,7 @@ public class GameController {
 		orangeBlue.setOnAction(colorChange);
 		pinkGreen.setOnAction(colorChange);
 		yellowPurple.setOnAction(colorChange);
-
-		// This is where you will add and animate pieces
-		Platform.runLater(() -> dropAnimation(3, 4, 1));
+		boardLayer.setOnMouseClicked(dropHandler);
 	}
 	
 	// draws board with an extra empty first row for the dropping animation
@@ -108,7 +99,6 @@ public class GameController {
 	    
 		Shape boardCell = Shape.subtract(board, hole);
 		boardCell.setFill(Color.rgb(205, 133, 63));
-
 		return boardCell;
 	}
 	
@@ -129,6 +119,7 @@ public class GameController {
 		// position values in a transition are relative to the starting position
 		double yEnd = (pieceRow + 1) * cellHeight;
 		double yBounce = yEnd - .75 * cellHeight;
+		double duration = (yEnd + (yEnd - yBounce) * 2);
 		
 		piece.setLayoutX(xPosition);
 		piece.setLayoutY(yStart);
@@ -139,7 +130,7 @@ public class GameController {
 		path.getElements().add(new LineTo(0, yEnd));
 		path.getElements().add(new LineTo(0, yBounce));
 		path.getElements().add(new LineTo(0, yEnd));
-		PathTransition transition = new PathTransition(Duration.millis(pieceRow * 200), path, piece);
+		PathTransition transition = new PathTransition(Duration.millis(duration), path, piece);
 		transition.setOnFinished(e -> stage.setResizable(true));
 		transition.play();
 		// TODO: logically, certain stuff should happen when finished, and certain stuff should not happen while animation
@@ -178,4 +169,30 @@ public class GameController {
 		}
 	};
 	
+	EventHandler<MouseEvent> dropHandler = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			double xPosition = event.getX();
+			double cellWidth = boardLayer.getWidth() / playerData.getNumColumns();
+			int columnClicked = (int) (xPosition / cellWidth);
+			
+			int droppedRow = playerData.drop(columnClicked, playerTurn);
+			if(droppedRow == -1) {
+				// the column was full, do nothing
+				return;
+			}
+			dropAnimation(columnClicked, droppedRow, playerTurn);
+			
+			int winner = playerData.checkWinner();
+			if(winner == playerTurn) {
+				// winning sequence
+			}
+		}
+	};
+	
+	private void AIMove() {
+		if(difficulty == 0) {
+			
+		}
+	}
 }

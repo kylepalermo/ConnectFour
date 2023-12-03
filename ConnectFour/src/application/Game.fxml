@@ -12,22 +12,21 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-
-<BorderPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameController">
+<BorderPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GameController">
    <top>
-      <ToolBar minHeight="40.0" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ToolBar minHeight="40.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER">
         <items>
-          <Button mnemonicParsing="false" text="Move Log" />
-            <MenuButton mnemonicParsing="false" text="Colors">
+          <Button minHeight="0.0" mnemonicParsing="false" text="Move Log" />
+            <MenuButton minHeight="0.0" mnemonicParsing="false" text="Colors">
               <items>
                 <MenuItem fx:id="orangeBlue" mnemonicParsing="false" text="Orange / Blue" />
                 <MenuItem fx:id="pinkGreen" mnemonicParsing="false" text="Pink / Green" />
                   <MenuItem fx:id="yellowPurple" mnemonicParsing="false" text="Yellow / Purple" />
               </items>
             </MenuButton>
-            <Button mnemonicParsing="false" text="New Game" />
-            <Button mnemonicParsing="false" text="Save Game" />
-            <Button mnemonicParsing="false" text="Load Game" />
+            <Button minHeight="0.0" mnemonicParsing="false" text="New Game" />
+            <Button minHeight="0.0" mnemonicParsing="false" text="Save Game" />
+            <Button minHeight="0.0" mnemonicParsing="false" text="Load Game" />
         </items>
       </ToolBar>
    </top>
@@ -37,11 +36,11 @@
             <Insets />
          </opaqueInsets>
          <BorderPane.margin>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+            <Insets />
          </BorderPane.margin>
          <children>
-            <Pane fx:id="piecesLayer" prefHeight="200.0" prefWidth="200.0" />
-            <GridPane fx:id="boardLayer" gridLinesVisible="true">
+            <Pane fx:id="piecesLayer" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
+            <GridPane fx:id="boardLayer" gridLinesVisible="true" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -62,6 +61,9 @@
               </rowConstraints>
             </GridPane>
          </children>
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
       </StackPane>
    </center>
 </BorderPane>
