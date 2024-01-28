@@ -16,7 +16,11 @@
    <top>
       <ToolBar minHeight="40.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER">
         <items>
-          <Button minHeight="0.0" mnemonicParsing="false" text="Move Log" />
+            <MenuButton fx:id="moveLogMenuButton" mnemonicParsing="false" text="Move Log">
+               <items>
+                  <MenuItem fx:id="logMenuItem" mnemonicParsing="false" text="No moves" />
+               </items>
+            </MenuButton>
             <MenuButton minHeight="0.0" mnemonicParsing="false" text="Colors">
               <items>
                 <MenuItem fx:id="orangeBlue" mnemonicParsing="false" text="Orange / Blue" />
@@ -24,9 +28,9 @@
                   <MenuItem fx:id="yellowPurple" mnemonicParsing="false" text="Yellow / Purple" />
               </items>
             </MenuButton>
-            <Button minHeight="0.0" mnemonicParsing="false" text="New Game" />
-            <Button minHeight="0.0" mnemonicParsing="false" text="Save Game" />
-            <Button minHeight="0.0" mnemonicParsing="false" text="Load Game" />
+            <Button fx:id="newGameButtonToolbar" minHeight="0.0" mnemonicParsing="false" text="New Game" />
+            <Button fx:id="saveGameButtonToolbar" minHeight="0.0" mnemonicParsing="false" text="Save Game" />
+            <Button fx:id="loadGameButtonToolbar" minHeight="0.0" mnemonicParsing="false" text="Load Game" />
         </items>
       </ToolBar>
    </top>
@@ -60,6 +64,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
+            <Pane fx:id="lineLayer" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="0.0" prefWidth="0.0" />
          </children>
          <padding>
             <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
