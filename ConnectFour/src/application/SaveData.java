@@ -71,7 +71,9 @@ public class SaveData implements Serializable{
     	File directory = new File("saves");
     	File[] files = directory.listFiles();
     	for(File file : files) {
-    		saveNames.add(file.getName());
+    		if(!file.getName().equals(".gitignore")) {
+        		saveNames.add(file.getName());
+    		}
     	}
     	return saveNames;
     }
